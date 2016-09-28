@@ -6,7 +6,10 @@ require 'aws-sdk'
 
 def getAllBuckets
   begin
-    s3 = Aws::S3::Client.new(region: ENV['AWS_REGION'])
+    credentials = Aws::SharedCredentials.new
+    region = ENV['AWS_REGION'].nil? ? 'us-west-1' : ENV['AWS_REGION']
+
+    s3 = Aws::S3::Client.new(region: region, credentials: credentials)
     no_of_buckets = s3.list_buckets.buckets.length
 
     puts ("===============================================================")
